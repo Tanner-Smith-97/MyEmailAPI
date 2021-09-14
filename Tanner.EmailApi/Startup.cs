@@ -14,8 +14,11 @@ using Microsoft.OpenApi.Models;
 
 namespace Tanner.EmailApi
 {
+    using Services;
+
     public class Startup
     {
+        private string _sendMailApiKey = null;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,10 +29,17 @@ namespace Tanner.EmailApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            _sendMailApiKey = Configuration["SendMail:ApiKey"];
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Tanner.EmailApi", Version = "v1" });
+            });
+
+            services.AddTransient<SendEmailService>( _ =>
+            {
+                return new SendEmailService(apiKey: _sendMailApiKey);
             });
         }
 
