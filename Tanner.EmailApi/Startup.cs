@@ -30,6 +30,17 @@ namespace Tanner.EmailApi
         public void ConfigureServices(IServiceCollection services)
         {
             _sendMailApiKey = Configuration["SendMail:ApiKey"];
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                });
+            });
+            
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -57,6 +68,8 @@ namespace Tanner.EmailApi
 
             app.UseRouting();
 
+            app.UseCors();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
