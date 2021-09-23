@@ -19,7 +19,8 @@
         [HttpPost]
         public async Task <IActionResult> SendEmail([FromBody] CreateEmailRequest emailRequest)
         {
-            var contentToSend = emailRequest.Email + emailRequest.Name + emailRequest.Content;
+            // var contentToSend = emailRequest.Email + emailRequest.Name + emailRequest.Content;
+            var contentToSend = emailRequest.Email + " \n" + emailRequest.Name + " \n" + emailRequest.Content;
             await _emailService.SendEmail("test", contentToSend);
             return Ok();
         }
